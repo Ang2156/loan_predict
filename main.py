@@ -64,18 +64,18 @@ elif app_mode == '貸款核准判別':
     Credit_History = st.sidebar.radio('還款紀錄:', (0.0, 1.0))          # 還款紀錄
     ApplicantIncome = st.sidebar.slider(   # 申請人收入
         # label='ApplicantIncome',
-        label='申請人收入:',
+        label='申請人收入(月薪):',
         min_value=0,
-        max_value=10000,
+        max_value=1000000,
         value=0,)
     CoapplicantIncome = st.sidebar.slider(   # 共同申請人收入
         # label='CoapplicantIncome',
-        label='共同申請人收入:',
+        label='共同申請人收入(月薪):',
         min_value=0,
-        max_value=10000,
+        max_value=1000000,
         value=0,)
     # LoanAmount = st.sidebar.slider('LoanAmount')  # 申請貸款額度
-    LoanAmount = st.sidebar.slider('申請貸款額度:')  # 申請貸款額度
+    LoanAmount = st.sidebar.slider('申請貸款額度(萬):')  # 申請貸款額度
     # Loan_Amount_Term = st.sidebar.selectbox(      # 貸款期限(以月為單位)
     #     'Loan_Amount_Term',
     #     (12.0,36.0,60.0,84.0,120.0,180.0,240.0,300.0,360.0))
