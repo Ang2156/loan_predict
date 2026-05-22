@@ -1,5 +1,5 @@
 # loan_predict
-貸款許可判別-使用決策森林
+貸款許可判別 - 使用決策森林
 
 1.顯示頁面(Home跟Prediction)
 
