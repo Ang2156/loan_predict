@@ -5,32 +5,13 @@ import base64 # 載入 model 需要 base64
 import pickle
 
 # 用來將字串轉換成整數資料型別的字典
-# gender_dict = {'Male':1, 'Female':2}         # 性別
-gender = ['Female','Male']                   # 女性是0，男性是1
-# feature_dict = {'No':1, 'Yes':2}             # 表示是或否的字典，用來表示:1.未/已婚、2.是/否為自由職業(self-employed)
-feature = ['No', 'Yes']                      # No為0，Yes為1   
-
-# edu = {'Graduate':1, 'Not Graduate':2}       # 教育程度
-edu = ['Not Graduate', 'Graduate']           # 未畢業為0，畢業為1
-# prop = {'Rural':1, 'Urban':2, 'Semiurban':3} # 房產地段(Rural:郊區，Urban:都市，Semiurban:近郊區)
+gender = ['Female','Male']                   # 性別:女性是0，男性是1
+feature = ['No', 'Yes']                      # 表示是或否的陣列(未/已婚、是/否為自由職業(self-employed))，No為0，Yes為1   
+edu = ['Not Graduate', 'Graduate']           # 教育程度:未畢業為0，畢業為1
 prop = ['Rural', 'Urban', 'Semiurban']       # 房產地段(Rural:郊區，Urban:都市，Semiurban:近郊區)
 
+
 ## step 1:
-## 特徵工程
-
-# 取得表示是或否的欄位根據使用者的輸入透過字典key跟value轉換成數值
-# def get_fvalue(val):
-#     for key,value in feature_dict.items():
-#         if val == key:
-#             return value
-
-# 取得其他欄位使用者的輸入並透過字典key跟value轉換成數值
-# def get_value(val, dict):
-#     for key,value in dict.items():
-#         if val == key:
-#             return value
-
-## step 2:
 ## 建立顯示模板
 
 # 取得使用者選擇的顯示頁面(Home跟Prediction)
@@ -39,38 +20,31 @@ app_mode = st.sidebar.selectbox('Select Page', ['Home', 'Prediction'])
 # 根據使用者選擇切換顯示頁面(Home跟Prediction)
 # Home Page:
 if app_mode == 'Home':
+
     st.title('LOAN PREDICTION:')  # 頁面標題
     st.image('hipster_loan-1.jpg')    # 示意圖
-    st.markdown('Dataset:')       # markdown 文字方塊
+    st.markdown('Dataset :')       # markdown 文字方塊
     data = pd.read_csv('loan_dataset.csv') # 取得外部csv資料，來源:https://www.kaggle.com/datasets/burak3ergun/loan-data-set?resource=download
-    # data = pd.read_csv('informations.csv') # 取得外部csv資料
     st.write(data.head())         # 在網頁上顯示前5筆資料
-    st.bar_chart(data[['ApplicantIncome', 'LoanAmount']]).head(20) # 根據'申請人收入'與'申請貸款金額'的前20筆資料畫出長條圖
+    st.markdown('ApplicantIncome vs LoanAmount :')
+    st.bar_chart(data[['ApplicantIncome', 'LoanAmount']].head(20)) # 根據'申請人收入'與'申請貸款金額'的前20筆資料畫出長條圖
+
 # Prediction Page:
 elif app_mode == 'Prediction':
     
-
     # st.image('slider-short-3.jpg')    # 示意圖
     st.image('hipster_loan-1.jpg')    # 示意圖
     # st.subheader('Sir/Mme , You need to fill all necessary informations in order to get a reply to your loan request!') # 子標題
     st.subheader('先生/小姐，請填寫完整資料以申請貸款!') # 子標題
     # 側邊欄
     st.sidebar.header('Informations about the client:') # 側邊欄標題
-    # 用來將字串轉換成整數資料型別的字典
-    # gender_dict = {'Male':1, 'Female':2}         # 性別
-    # feature_dict = {"No":1,"Yes":2}              # 表示是或否的字典，用來表示:1.未/已婚、2.是/否為自由職業(self-employed)
-    # edu = {'Graduate':1, 'Not Graduate':2}       # 教育程度
-    # prop = {'Rural':1, 'Urban':2, 'Semiurban':3} # 房產地段(Rural:郊區，Urban:都市，Semiurban:近郊區)
+
     # 取得使用者輸入的UI元件
-    # Gender = st.sidebar.radio('Gender', tuple(gender_dict.keys()))
     Gender = st.sidebar.radio('Gender', gender)
-    # Married = st.sidebar.radio('Married', tuple(feature_dict.keys()))
     Married = st.sidebar.radio('Married', feature)
-    # Self_Employed = st.sidebar.radio('Self_Employed', tuple(feature_dict.keys()))
     Self_Employed = st.sidebar.radio('Self_Employed', feature)
 
     Dependents = st.sidebar.radio('Dependents', options=['0', '1', '2', '3+']) # 受撫養的家屬或子女人數
-    # Education = st.sidebar.radio('Education', tuple(edu.keys()))
     Education = st.sidebar.radio('Education', edu)                         
     Property_Area = st.sidebar.radio('Property_Area', prop) # 房產地段
     Credit_History = st.sidebar.radio('Credit_History', (0.0, 1.0)) # 信用紀錄評分
@@ -130,17 +104,13 @@ elif app_mode == 'Prediction':
                   LoanAmount,
                   Loan_Amount_Term,
                   Credit_History,
-                #   get_value(Gender,gender_dict),
                   gender.index(Gender),
-                #   get_fvalue(Married),
                   feature.index(Married),
                   data1['Dependents'][0],
                   data1['Dependents'][1],
                   data1['Dependents'][2],
                   data1['Dependents'][3],
-                #   get_value(Education,edu),
                   edu.index(Education),
-                #   get_fvalue(Self_Employed),
                   feature.index(Self_Employed),
                   data1['Property_Area'][0],
                   data1['Property_Area'][1],
@@ -160,7 +130,6 @@ elif app_mode == 'Prediction':
         file.close()
    
         loaded_model = pickle.load(open('Random_Forest.sav', 'rb'))
-        # loaded_model = pickle.load(open('Random_Forest.pkl', 'rb'))
         prediction = loaded_model.predict(single_sample)
         if prediction[0] == 0 :
             st.error('According to our Calculations, you will not get the loan from Bank')
