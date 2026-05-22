@@ -66,13 +66,13 @@ elif app_mode == '貸款核准判別':
         # label='ApplicantIncome',
         label='申請人收入(月薪):',
         min_value=0,
-        max_value=1000000,
+        max_value=100000,
         value=0,)
     CoapplicantIncome = st.sidebar.slider(   # 共同申請人收入
         # label='CoapplicantIncome',
         label='共同申請人收入(月薪):',
         min_value=0,
-        max_value=1000000,
+        max_value=100000,
         value=0,)
     # LoanAmount = st.sidebar.slider('LoanAmount')  # 申請貸款額度
     LoanAmount = st.sidebar.slider('申請貸款額度(萬):')  # 申請貸款額度
