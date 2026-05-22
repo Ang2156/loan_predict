@@ -1,3 +1,4 @@
+# 此環境設置才可在streamlit雲端上正確運行，參考:https://discuss.streamlit.io/t/decisiontreeclassifier-object-has-no-attribute-monotonic-cst/64271
 streamlit==1.31.1
 scikit-learn==1.3.2
 joblib
